@@ -70,7 +70,8 @@ int hash(char* name) {
     return sum % 100;
 }
 
-int main() {
+int main() 
+{
     symbol* table[100];
     for (int i = 0; i < 100; i++) {
         table[i] = NULL;
@@ -84,4 +85,7 @@ int main() {
 
     symbol* entry = search(table, "y");
     if (entry != NULL) {
-        printf("Found: %s %s %s %d %s\n", entry->name, entry
+        printf("Found: %s %s %s %d %s\n", entry->name, entry->type, entry->value, entry->address, entry->scope);
+} else {
+printf("Not found\n");
+}
