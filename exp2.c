@@ -11,6 +11,14 @@ typedef struct {
     char scope[32];
 } symbol;
 
+int hash(char* name) {
+    int sum = 0;
+    for (int i = 0; i < strlen(name); i++) {
+        sum += name[i];
+    }
+    return sum % 100;
+}
+
 // Function to insert a new entry into the symbol table
 void insert(symbol* table[], char* name, char* type, char* value, int address, char* scope) {
     symbol* entry = (symbol*) malloc(sizeof(symbol));
@@ -62,13 +70,6 @@ void display(symbol* table[]) {
 }
 
 // Hash function to generate an index for a given name
-int hash(char* name) {
-    int sum = 0;
-    for (int i = 0; i < strlen(name); i++) {
-        sum += name[i];
-    }
-    return sum % 100;
-}
 
 int main() 
 {
@@ -87,5 +88,6 @@ int main()
     if (entry != NULL) {
         printf("Found: %s %s %s %d %s\n", entry->name, entry->type, entry->value, entry->address, entry->scope);
 } else {
-printf("Not found\n");
+printf("Not found\n");
+}
 }
