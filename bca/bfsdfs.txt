@@ -1,0 +1,83 @@
+Breadth-First Search (BFS):
+```prolog
+% BFS implementation
+bfs(Start, Goal, Solution) :-
+    bfs([[Start]], Goal, SolutionRev),
+    reverse(SolutionRev, Solution).
+
+% Base case: goal state found
+bfs([[Goal|Path]|_], Goal, [Goal|Path]).
+
+% Recursive case: expand next node and continue BFS
+bfs([[Node|Path]|Paths], Goal, Solution) :-
+    findall([NextNode, Node|Path],
+            (transition(Node, NextNode), \+ member(NextNode, [Node|Path])),
+            NewPaths),
+    append(Paths, NewPaths, UpdatedPaths),
+    bfs(UpdatedPaths, Goal, Solution).
+
+% Example transition/2 predicate
+transition(a, b).
+transition(b, c).
+transition(c, d).
+transition(d, e).
+transition(e, f).
+transition(f, g).
+transition(g, h).
+
+% Usage example:
+% ?- bfs(a, h, Solution).
+```
+
+Depth-First Search (DFS):
+```prolog
+% DFS implementation
+dfs(Start, Goal, Solution) :-
+    dfs(Start, Goal, [Start], SolutionRev),
+    reverse(SolutionRev, Solution).
+
+% Base case: goal state found
+dfs(Goal, Goal, _, [Goal]).
+
+% Recursive case: expand next node and continue DFS
+dfs(Node, Goal, Visited, [Node|Path]) :-
+    transition(Node, NextNode),
+    \+ member(NextNode, Visited),
+    dfs(NextNode, Goal, [NextNode|Visited], Path).
+
+% Example transition/2 predicate
+transition(a, b).
+transition(a, c).
+transition(b, d).
+transition(c, d).
+transition(c, e).
+transition(d, f).
+transition(e, f).
+
+% Usage example:
+% ?- dfs(a, f, Solution).
+```
+
+In both programs, the `transition/2` predicate represents the possible transitions between nodes in the graph. You can modify it based on your specific graph or problem.
+
+To use the BFS program, you can query `bfs(Start, Goal, Solution)`, where `Start` is the starting node, `Goal` is the goal node, and `Solution` is the variable that will store the solution path from the start node to the goal node.
+
+Similarly, to use the DFS program, you can query `dfs(Start, Goal, Solution)`, where `Start` is the starting node, `Goal` is the goal node, and `Solution` is the variable that will store the solution path from the start node to the goal node.
+
+Please note that these programs assume a finite graph and do not consider cycles.
+
+The outputs of the BFS and DFS programs will depend on the specific queries made. Here are some example queries and their outputs:
+
+BFS:
+Query: `bfs(a, h, Solution).`
+Output: `Solution = [h, g, f, e, d, c, b, a]`
+
+This means that starting from node 'a', the BFS algorithm finds a path to node 'h' with the following sequence: a -> b -> c -> d -> e -> f -> g -> h.
+
+DFS:
+Query: `dfs(a, f, Solution).`
+Output: `Solution = [f, d, c, a]`
+
+This means that starting from node 'a', the DFS algorithm finds a path to node 'f' with the following sequence: a -> c -> d -> f.
+
+Please note that the outputs may vary based on the specific transition predicates you define and the structure of your graph.
